@@ -27,12 +27,20 @@ class CreateHashMap:
     # lookup function - retrieve a value associated with a key
     def lookup(self, key):
         # determine the respective keys bucket
-        bucket = hash(key) % len(self.list)
-        bucket_list = self.list[bucket]
+        hash_index = hash(key) % len(self.list)
+        hash_chain = self.list[hash_index]
 
-        for kv_pair in bucket_list:
+        # return the matching item on key match
+        for kv_pair in hash_chain:
             if kv_pair == kv_pair[0]:
                 return kv_pair[1]
         return None
 
-    # remove function - removes a item in hash table
+    # delete function - deletes a item in hash table
+    def delete(self, key):
+        hash_index = hash(key) % len(self.list)
+        hash_chain = self.list[hash_index]
+
+        # remove the key from the list if it exists
+        if key in hash_chain:
+            hash_chain.remove(key)
