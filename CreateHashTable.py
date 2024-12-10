@@ -23,10 +23,16 @@ class CreateHashMap:
         key_value = [key, item]
         bucket_list.append(key_value)
         return True
+    
+    # lookup function - retrieve a value associated with a key
+    def lookup(self, key):
+        # determine the respective keys bucket
+        bucket = hash(key) % len(self.list)
+        bucket_list = self.list[bucket]
 
-
-    # lookup function - looks up a item in hash table
-
-
+        for kv_pair in bucket_list:
+            if kv_pair == kv_pair[0]:
+                return kv_pair[1]
+        return None
 
     # remove function - removes a item in hash table
