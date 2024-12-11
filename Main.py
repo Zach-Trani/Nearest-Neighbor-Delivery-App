@@ -5,9 +5,26 @@ from CreateHashTable import CreateHashMap
 from Package import Package
 
 # Read the file of package information
-with open("Data/Package_Data.csv") as csvfile2:
-    CSV_Package = csv.reader(csvfile2)
-    CSV_Package = list(CSV_Package)
+with open("Data/Package_Data.csv") as Package_Data_input:
+    Package_Data_CSV = csv.reader(Package_Data_input)
+    Package_Data_CSV = list(Package_Data_CSV)
+# print(Package_Data_CSV)
+
+# Read the file of distance information
+with open("Data/Distance_Data.csv") as Distance_Data_input:
+    Distance_Data_CSV = csv.reader(Distance_Data_input)
+    Distance_Data_CSV = list(Distance_Data_CSV)
+# print(Distance_Data_CSV)
+
+# Read the file of address information
+with open("Data/Address_Data.csv") as Address_Data_input:
+    Address_Data_CSV = csv.reader(Address_Data_input)
+    Address_Data_CSV = list(Address_Data_CSV)
+print(Address_Data_CSV)
+
+
+
+
 
 
 # Create package objects from the CSV package file
@@ -26,20 +43,79 @@ def load_package_data(filename, package_hash_table):
             pStatus = "At Hub"
 
             # Package object
-            p = Package(pID, pAddress, pCity, pState, pZipcode, pDeadline_time, pWeight, pStatus)
+            p = Package(pID, pAddress, pDeadline_time, pCity, pZipcode, pState, pWeight, pStatus)
 
+             # Debug print - add this
+            print(f"Creating package {pID}")
+            
             # Insert data into hash table
             package_hash_table.insert(pID, p)
+            
+            # Debug print - add this
+            print(f"After insertion, looking up package {pID}:")
+            print(package_hash_table.lookup(pID))
 
 # Create hash table
 package_hash_table = CreateHashMap()
 
-load_package_data("CSV/Package_File.csv", package_hash_table)
+load_package_data("Data/Package_Data.csv", package_hash_table)
 
 
-Class Main:
+# Debug print
+result = package_hash_table.lookup(6)
+print("Looking up package 6:")
+print(result)
 
-    # lets log the first id from our hash table
 
-    # something along the lines of 
-    print(package_hash_table.lookup(0))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Create package objects from the CSV package file
+# Load package objects into the hash table: package_hash_table
+def load_package_data(filename, package_hash_table):
+    with open(filename) as package_info:
+        package_data = csv.reader(package_info)
+        for package in package_data:
+            pID = int(package[0])
+            pAddress = package[1]
+            pCity = package[2]
+            pState = package[3]
+            pZipcode = package[4]
+            pDeadline_time = package[5]
+            pWeight = package[6]
+            pStatus = "At Hub"
+
+            # Package object
+            p = Package(pID, pAddress, pDeadline_time, pCity, pZipcode, pState, pWeight, pStatus)
+
+             # Debug print - add this
+            print(f"Creating package {pID}")
+            
+            # Insert data into hash table
+            package_hash_table.insert(pID, p)
+            
+            # Debug print - add this
+            print(f"After insertion, looking up package {pID}:")
+            print(package_hash_table.lookup(pID))
+
+# Create hash table
+package_hash_table = CreateHashMap()
+
+load_package_data("Data/Package_Data.csv", package_hash_table)
+
+
+# Debug print
+result = package_hash_table.lookup(6)
+print("Looking up package 6:")
+print(result)

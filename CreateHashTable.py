@@ -29,7 +29,7 @@ class CreateHashMap:
         # determine the respective keys bucket
         hash_index = hash(key) % len(self.list)
         hash_chain = self.list[hash_index]
-        print(hash_chain)
+        # print(hash_chain)
 
         # return the matching item on key match
         for kv_pair in hash_chain:
