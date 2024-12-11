@@ -1,31 +1,30 @@
 import csv
 import datetime
+import Truck
 
 from CreateHashTable import CreateHashMap
 from Package import Package
 
-# Read the file of package information
+# Read package CSV data into a list - might be unessacary if its being used in load package data function
 with open("Data/Package_Data.csv") as Package_Data_input:
     Package_Data_CSV = csv.reader(Package_Data_input)
     Package_Data_CSV = list(Package_Data_CSV)
 # print(Package_Data_CSV)
 
-# Read the file of distance information
+# Read distance CSV data into a list
 with open("Data/Distance_Data.csv") as Distance_Data_input:
     Distance_Data_CSV = csv.reader(Distance_Data_input)
     Distance_Data_CSV = list(Distance_Data_CSV)
 # print(Distance_Data_CSV)
 
-# Read the file of address information
+# Read address CSV data into a list
 with open("Data/Address_Data.csv") as Address_Data_input:
     Address_Data_CSV = csv.reader(Address_Data_input)
     Address_Data_CSV = list(Address_Data_CSV)
 print(Address_Data_CSV)
 
-
-
-
-
+# instantiate the hash map
+package_hash_table = CreateHashMap()
 
 # Create package objects from the CSV package file
 # Load package objects into the hash table: package_hash_table
@@ -55,16 +54,9 @@ def load_package_data(filename, package_hash_table):
             print(f"After insertion, looking up package {pID}:")
             print(package_hash_table.lookup(pID))
 
-# Create hash table
-package_hash_table = CreateHashMap()
 
 load_package_data("Data/Package_Data.csv", package_hash_table)
 
-
-# Debug print
-result = package_hash_table.lookup(6)
-print("Looking up package 6:")
-print(result)
 
 
 
