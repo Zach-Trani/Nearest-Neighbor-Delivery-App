@@ -70,7 +70,7 @@ truck_1 = Truck.Truck(16, 18, None, [1, 13, 14, 15, 16, 20, 29, 30, 31, 34, 37, 
 truck_2 = Truck.Truck(16, 18, None, [3, 6, 12, 17, 18, 19, 21, 22, 23, 24, 26, 27, 35, 36, 38, 39], 0.0,
                      "4001 South 700 East", datetime.timedelta(hours=10, minutes=20))
 
-# Create truck object truck3 - packages with wrong address & other packages
+# Create truck object truck3 - packages with wrong address & other packages. Will update departure_time before calling the optimization
 truck_3 = Truck.Truck(16, 18, None, [2, 4, 5, 6, 7, 8, 9, 10, 11, 25, 28, 32, 33], 0.0, "4001 South 700 East",
                      datetime.timedelta(hours=9, minutes=5))
 
@@ -138,14 +138,21 @@ def deliver_packages(truck):
                 next_address = distance_diff
                 next_package = package
 
+        # add the next closest package to our final list
         truck.packages.append(next_package.ID)
-        need_to_deliver.remove(next_package)
-        truck.mileage += next_address
-        truck.address = next_package.address
+        need_to_deliver.remove(next_package) # remove off to do list
+        truck.mileage += next_address # sum of address to address distances
+        truck.address = next_package.address # reset our reference address
         truck.time += datetime.timedelta(hours=next_address/18) # miles / 18 mph= hour, then use datetime to convert to minutes
-
+        next_package.delivery_time = truck.time 
+        next_package.departure_time = truck.departure_time
 
 # Call Nearest Neighbor algo for each truck
+deliver_packages(truck_1)
+deliver_packages(truck_2)
+truck_3.departure_time = min(truck_1.time, truck_2.time)
+deliver_packages(truck_3)
+
 
     # # Put the trucks through the loading process
         # delivering_packages(truck1)
