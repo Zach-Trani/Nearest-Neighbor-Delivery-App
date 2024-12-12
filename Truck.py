@@ -1,4 +1,4 @@
-# Class for truck data
+# Class for truck data - NEED TO FIX PARAMETER ORDER
 class Truck:
     def __init__(self, load, package_limit, speed, mileage, departure_time, address, packages):
         self.package_limit = package_limit
@@ -9,6 +9,7 @@ class Truck:
         self.address = address
         self.departure_time = departure_time
         self.time = departure_time
+        self.packages = packages
 
     def __str__(self):
         return "%s, %s, %s, %s, %s, %s, %s" % (

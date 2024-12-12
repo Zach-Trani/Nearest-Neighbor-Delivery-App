@@ -48,6 +48,7 @@ def load_package_data(filename, package_hash_table):
 # Method for finding distance between two addresses
 def distance_in_between(x_val, y_val):
     distance = Distance_Data_CSV[x_val][y_val]
+    # If the entry is empty, we can key in with x & y values reversed since matrix is symmetrical
     if distance == '':
         distance = Distance_Data_CSV[y_val][x_val]
 
@@ -59,15 +60,17 @@ def extract_address(address):
         if address in row[2]:
             return int(row[0])
 
-# Create truck object truck1
+
+# *-- manually iterate package placement, split conflicting Nearest Neighbor constraints amongst the 3 trucks --*
+# Create truck object truck1 - packages needing to leave early
 truck_1 = Truck.Truck(16, 18, None, [1, 13, 14, 15, 16, 20, 29, 30, 31, 34, 37, 40], 0.0, "4001 South 700 East",
                      datetime.timedelta(hours=8))
 
-# Create truck object truck2
+# Create truck object truck2 - packages delayed until 9:00am
 truck_2 = Truck.Truck(16, 18, None, [3, 6, 12, 17, 18, 19, 21, 22, 23, 24, 26, 27, 35, 36, 38, 39], 0.0,
                      "4001 South 700 East", datetime.timedelta(hours=10, minutes=20))
 
-# Create truck object truck3
+# Create truck object truck3 - packages with wrong address & other packages
 truck_3 = Truck.Truck(16, 18, None, [2, 4, 5, 6, 7, 8, 9, 10, 11, 25, 28, 32, 33], 0.0, "4001 South 700 East",
                      datetime.timedelta(hours=9, minutes=5))
 
@@ -76,14 +79,6 @@ package_hash_table = CreateHashMap()
 
 # load packages into hash table
 load_package_data("Data/Package_Data.csv", package_hash_table)
-
-
-
-
-
-
-
-
 
 # Create package objects from the CSV package file
 # Load package objects into the hash table: package_hash_table
@@ -112,3 +107,49 @@ package_hash_table = CreateHashMap()
 
 # Load Package data into hash table
 load_package_data("Data/Package_Data.csv", package_hash_table)
+
+
+# Nearest Neighbor algo
+    # Takes in a truck obj
+    # calculates next closest address based on current
+    # records route mileage
+    # records time packages are delivered
+
+def deliver_packages(truck):
+    # Loop through package ID's & temporarily store package objects in not_delivered list
+    need_to_deliver = []
+    for packageID in truck.packages: # (hash map keys)
+        package = package_hash_table.lookup(packageID) # retrieve package object (hash map values) and store into not_delivered
+        need_to_deliver.append(package)
+    # Clear the unordered package list so they can be re-ordered using nearest neighbor algorithm
+    truck.packages.clear()
+
+    while len(need_to_deliver) > 0:
+        next_address = 140 # arbitrarily set as it will be rewriteen (140 is max dist for a truck)
+        next_package = None
+
+        for package in need_to_deliver:
+            # Retrieve matrix coordinates
+            x_index = extract_address(truck.address)
+            y_index = extract_address(package.address)
+            distance_diff = distance_in_between(x_index, y_index)
+
+            if distance_diff <= next_address:
+                next_address = distance_diff
+                next_package = package
+
+        truck.packages.append(next_package.ID)
+        need_to_deliver.remove(next_package)
+        truck.mileage += next_address
+        truck.address = next_package.address
+        truck.time += datetime.timedelta(hours=next_address/18) # miles / 18 mph= hour, then use datetime to convert to minutes
+
+
+# Call Nearest Neighbor algo for each truck
+
+    # # Put the trucks through the loading process
+        # delivering_packages(truck1)
+        # delivering_packages(truck2)
+
+      # Need to add some logic that departs the 3rd truck after a driver frees up
+        # delivering_packages(truck3)
