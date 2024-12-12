@@ -5,7 +5,7 @@ import Truck
 from CreateHashTable import CreateHashMap
 from Package import Package
 
-# Read package CSV data into a list - might be unessacary if its being used in load package data function
+# Read package CSV data into a list - ** NECESSARY?? ** ALSO USED IN WHILE LOOP
 with open("Data/Package_Data.csv") as Package_Data_input:
     Package_Data_CSV = csv.reader(Package_Data_input)
     Package_Data_CSV = list(Package_Data_CSV)
@@ -87,6 +87,7 @@ load_package_data("Data/Package_Data.csv", package_hash_table)
 
 # Create package objects from the CSV package file
 # Load package objects into the hash table: package_hash_table
+    # citing source - "C950 - Webinar 3 - Let's Go Hashing - Complete Python Code" loadMovieData function
 def load_package_data(filename, package_hash_table):
     with open(filename) as package_info:
         package_data = csv.reader(package_info)
@@ -102,24 +103,12 @@ def load_package_data(filename, package_hash_table):
 
             # Package object
             p = Package(pID, pAddress, pDeadline_time, pCity, pZipcode, pState, pWeight, pStatus)
-
-             # Debug print - add this
-            print(f"Creating package {pID}")
             
-            # Insert data into hash table
+            # package insert into hash table
             package_hash_table.insert(pID, p)
-            
-            # Debug print - add this
-            print(f"After insertion, looking up package {pID}:")
-            print(package_hash_table.lookup(pID))
 
-# Create hash table
+# Create hash table instance
 package_hash_table = CreateHashMap()
 
+# Load Package data into hash table
 load_package_data("Data/Package_Data.csv", package_hash_table)
-
-
-# Debug print
-result = package_hash_table.lookup(6)
-print("Looking up package 6:")
-print(result)

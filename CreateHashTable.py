@@ -6,7 +6,7 @@ class CreateHashMap:
             self.list.append([])
 
     # insert function - inserts a new item into hash table
-        # citing source - "C950 - Webinar 1 - Let's Go Hashing - Complete Python Code"
+        # citing source - "C950 - Webinar 1 - Let's Go Hashing - Complete Python Code" hash map function
     def insert(self, key, item):
         # get the bucket list where this item will go
         bucket = hash(key) % len(self.list)
